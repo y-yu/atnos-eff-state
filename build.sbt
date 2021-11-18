@@ -10,7 +10,6 @@ val projectName = "atnos-eff-state"
 lazy val root =
   project
     .in(file("."))
-    .settings(scalapropsSettings: _*)
     .settings(
       scalaVersion := scala213,
       crossScalaVersions := Seq(scala213, scala3),
@@ -45,18 +44,18 @@ lazy val root =
       homepage := Some(url("https://github.com/y-yu")),
       licenses := Seq("MIT" -> url(s"https://github.com/y-yu/$projectName/blob/master/LICENSE")),
       addCommandAlias("SetScala3", s"++ ${scala3}!"),
-      scalapropsVersion := "0.8.3",
       libraryDependencies ++= Seq(
         "org.atnos" %% "eff" % "5.22.0",
-        "com.lihaoyi" %% "pprint" % "0.6.6"
+        "com.lihaoyi" %% "pprint" % "0.6.6",
+        "org.typelevel" %% "cats-laws" % "2.6.1" % Test,
+        "org.scalacheck" %% "scalacheck" % "1.14.1" % Test
       ),
       libraryDependencies ++= {
         if (isScala3.value)
           Nil
         else
           Seq(compilerPlugin("org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full))
-      },
-      scalapropsWithScalaz
+      }
     )
 
 def isScala3 = Def.setting(
