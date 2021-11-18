@@ -1,5 +1,12 @@
-State using atnos-eff without mutable
+State without mutable using atnos-eff
 =====================================
+[![CI](https://github.com/y-yu/atnos-eff-state/actions/workflows/ci.yml/badge.svg)](https://github.com/y-yu/atnos-eff-state/actions/workflows/ci.yml)
+
+PoC of `State` without mutable(e.g. `var` variables) using [atnos-eff](https://github.com/atnos-org/eff). Its monadic and applicative lows are tested by [scalaprops](https://github.com/scalaprops/scalaprops).
+
+## Example
+
+See also: [`Main.scala`](https://github.com/y-yu/atnos-eff-state/blob/master/src/main/scala/Main.scala).
 
 ```scala
 type R = Fx.fx2[State[Int, *], Either[Throwable, *]]
