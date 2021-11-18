@@ -2,7 +2,7 @@ package state
 
 import org.atnos.eff./=
 
-sealed trait State[S, +A]
+sealed trait State[S, A]
 
 object State {
   case class Get[S]() extends State[S, S]

@@ -94,40 +94,8 @@ trait StateInterpreter { self =>
             Impure(other, interpretContinuation(state, c), interpretLast(last))
         }
 
-      case _ @ImpureAp(unions, continuation, last) =>
-        val collected = unions.project
-
-        def newState: S = collected.effects.foldLeft(state) { (s, x) =>
-          x match {
-            case State.Get() => s
-            case State.Set(value) => value
-          }
-        }
-
-        collected.effects.fold(false, false /* get, set */ ) {
-          case ((_, set), State.Get()) => (true, set)
-          case ((get, _), State.Set(_)) => (get, true)
-        } match {
-          case (true, true) =>
-            EitherCreation
-              .fromEither[U, Throwable, (A, S)](
-                Left(new RuntimeException)
-              )
-              .addLast(interpretLast(last))
-
-          case (false, false) =>
-            collected
-              .othersEff(interpretContinuation(state, continuation))
-              .addLast(interpretLast(last))
-
-          case (true, false) =>
-            interpretContinuation(newState, continuation)(collected.effects.map(_ => state))
-              .addLast(interpretLast(last))
-
-          case (false, true) =>
-            interpretContinuation(newState, continuation)(collected.effects.map(_ => ()))
-              .addLast(interpretLast(last))
-        }
+      case ap @ ImpureAp(_, _, _) =>
+        runState(state)(ap.toMonadic)
     }
   }
 }
