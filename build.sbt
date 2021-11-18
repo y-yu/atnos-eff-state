@@ -55,7 +55,8 @@ lazy val root =
           Nil
         else
           Seq(compilerPlugin("org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full))
-      }
+      },
+      scalapropsWithScalaz
     )
 
 def isScala3 = Def.setting(

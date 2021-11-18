@@ -3,8 +3,7 @@ import org.atnos.eff.Eff
 import org.atnos.eff.EitherEffect
 import org.atnos.eff.Fx
 import state.State
-import state.StateInterpreter.*
-import state.StateCreation.*
+import state.StateEffect.*
 
 object Main {
   def main(args: Array[String]): Unit = {

@@ -1,22 +1,19 @@
 package state
 
 import org.atnos.eff.*
-import org.atnos.eff.all._throwableEither
 
 object StateInterpreter extends StateInterpreter
 
 trait StateInterpreter { self =>
   implicit class RunState[R, A](val eff: Eff[R, A]) {
     def runState[U, S](state: S)(implicit
-      m1: Member.Aux[State[S, *], R, U],
-      m2: _throwableEither[U]
+      m1: Member.Aux[State[S, *], R, U]
     ): Eff[U, (A, S)] =
       self.runState(state)(eff)
   }
 
   def runState[R, A, U, S](state: S)(eff: Eff[R, A])(implicit
-    m1: Member.Aux[State[S, *], R, U],
-    m2: _throwableEither[U]
+    m1: Member.Aux[State[S, *], R, U]
   ): Eff[U, (A, S)] = {
     def interpretContinuation[X](
       state: S,
