@@ -15,7 +15,8 @@ import state.StateEffect.*
 
 object StateLawsTest extends Properties("StateLaws") {
   type R = Fx.fx1[State[Int, *]]
-  val default = 1
+
+  val default: Int = Arbitrary.arbitrary[Int].sample.getOrElse(1)
 
   import Eff.EffMonad
 
@@ -26,30 +27,23 @@ object StateLawsTest extends Properties("StateLaws") {
       Gen.frequency(
         1 -> Arbitrary.arbitrary[A].map(Eff.pure[R, A]),
         1 -> Arbitrary.arbitrary[A].map { x =>
-          StateEffect
-            .set[Int, R](aInt.arbitrary.sample.getOrElse(default))
-            .map(_ => x)
-        },
-        1 -> Arbitrary.arbitrary[A].map { x =>
-          StateEffect
-            .get[Int, R]
-            .map(_ => x)
+          for {
+            s <- StateEffect.get[Int, R]
+            newState = s + 1
+            _ <- StateEffect.set(newState)
+          } yield x
         }
       )
     )
 
   implicit def equalState[A](implicit
-    eqa: Eq[A],
-    aInt: Arbitrary[Int]
+    eq: Eq[(A, Int)]
   ): Eq[Eff[R, A]] = {
     Eq.by { (eff: Eff[R, A]) =>
       Eff
         .run(
-          eff.runState(
-            aInt.arbitrary.sample.getOrElse(default)
-          )
+          eff.runState(default)
         )
-        ._1
     }
   }
 
