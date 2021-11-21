@@ -3,7 +3,6 @@ package state
 import cats.Eq
 import cats.implicits.*
 import cats.laws.discipline.ApplicativeTests
-import cats.laws.discipline.FunctorTests
 import cats.laws.discipline.MonadTests
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen
@@ -38,22 +37,19 @@ object StateLawsTest extends Properties("StateLaws") {
 
   implicit def equalState[A](implicit
     eq: Eq[(A, Int)]
-  ): Eq[Eff[R, A]] = {
+  ): Eq[Eff[R, A]] =
     Eq.by { (eff: Eff[R, A]) =>
       Eff
         .run(
           eff.runState(default)
         )
     }
-  }
 
-  def checkAll(props: Seq[(String, Prop)]): Unit = {
+  def checkAll(props: Seq[(String, Prop)]): Unit =
     for ((name2, prop) <- props) yield {
       property(name + ":" + name2) = prop
     }
-  }
 
   checkAll(MonadTests[Eff[R, *]].monad[Int, Int, Int].props)
   checkAll(ApplicativeTests[Eff[R, *]].applicative[Int, Int, Int].props)
-  checkAll(FunctorTests[Eff[R, *]].functor[Int, Int, Int].props)
 }
