@@ -1,4 +1,5 @@
 import sbt._
+
 import Keys._
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 
@@ -47,7 +48,7 @@ lazy val root =
       libraryDependencies ++= Seq(
         "org.atnos" %% "eff" % "5.22.0",
         "com.lihaoyi" %% "pprint" % "0.6.6",
-        "org.typelevel" %% "cats-laws" % "2.6.1" % Test,
+        "org.typelevel" %% "cats-laws" % "2.9.0" % Test,
         "org.scalacheck" %% "scalacheck" % "1.14.1" % Test
       ),
       libraryDependencies ++= {
