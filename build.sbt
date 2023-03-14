@@ -1,8 +1,9 @@
 import sbt._
+
 import Keys._
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 
-val scala213 = "2.13.7"
+val scala213 = "2.13.10"
 val scala3 = "3.0.2"
 
 val projectName = "atnos-eff-state"
