@@ -1,4 +1,5 @@
 import sbt._
+
 import Keys._
 import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 
@@ -46,7 +47,7 @@ lazy val root =
       addCommandAlias("SetScala3", s"++ ${scala3}!"),
       libraryDependencies ++= Seq(
         "org.atnos" %% "eff" % "5.22.0",
-        "com.lihaoyi" %% "pprint" % "0.6.6",
+        "com.lihaoyi" %% "pprint" % "0.8.1",
         "org.typelevel" %% "cats-laws" % "2.6.1" % Test,
         "org.scalacheck" %% "scalacheck" % "1.14.1" % Test
       ),
